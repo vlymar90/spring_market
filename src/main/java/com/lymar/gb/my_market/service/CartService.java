@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @SessionScope
 public class CartService {
     private List<Product> products;
-    private  OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
     public CartService(OrderRepository orderRepository) {
@@ -74,13 +74,17 @@ public class CartService {
     }
 
     public void makeOrder() {
-        for (int i = 0; i < products.size(); i++) {
-            Order order = new Order();
-            order.setCount(products.get(i).getCount());
-            order.setUser_id(1);
-            order.setProduct_id(Math.toIntExact(products.get(i).getId()));
-            orderRepository.save(order);
-        }
+        List<Order> list = products.stream()
+                .map(i -> new Order(Math.toIntExact(i.getId()), i.getCount(), 1))
+                .collect(Collectors.toList());
+        orderRepository.saveAll(list);
+//        for (int i = 0; i < products.size(); i++) {
+//            Order order = new Order();
+//            order.setCount(products.get(i).getCount());
+//            order.setUser_id(1);
+//            order.setProduct_id(Math.toIntExact(products.get(i).getId()));
+//            orderRepository.saveAll()
+//        }
     }
 }
 
