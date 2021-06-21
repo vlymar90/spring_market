@@ -1,13 +1,13 @@
 package com.lymar.gb.my_market.service;
 
 
+import com.lymar.gb.my_market.aop.MyLogic;
 import com.lymar.gb.my_market.entity.Order;
 import com.lymar.gb.my_market.entity.Product;
 import com.lymar.gb.my_market.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
-
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,8 @@ public class CartService {
         products.add(product);
     }
 
+
+
     public void addProduct(Set<Product> products) {
         this.products.addAll(products.stream().map(
                 product -> {
@@ -42,6 +44,7 @@ public class CartService {
                     newProduct.setCount(1);
                     newProduct.setName(product.getName());
                     newProduct.setId(product.getId());
+
                     return newProduct;
                 }
         ).collect(Collectors.toList()));
@@ -72,7 +75,7 @@ public class CartService {
     public List<Product> getProducts() {
         return products;
     }
-
+    @MyLogic()
     public void makeOrder() {
         List<Order> list = products.stream()
                 .map(i -> new Order(Math.toIntExact(i.getId()), i.getCount(), 1))
