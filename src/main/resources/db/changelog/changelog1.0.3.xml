@@ -4,8 +4,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="changelog/changelog1.0.0.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/changelog1.0.1.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/changelog1.0.2.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/changelog1.0.3.xml" relativeToChangelogFile="true"/>
+    <changeSet id="add_product" author="v.lymar">
+        <modifyDataType
+                columnName="password"
+                newDataType="varchar(256)"
+                tableName="users"/>
+    </changeSet>
 </databaseChangeLog>

@@ -3,7 +3,6 @@ package com.lymar.gb.my_market.config.security;
 import com.lymar.gb.my_market.entity.Users;
 import com.lymar.gb.my_market.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
