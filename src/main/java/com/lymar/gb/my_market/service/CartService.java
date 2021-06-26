@@ -51,23 +51,23 @@ public class CartService {
         products.removeIf(p -> p.getId().equals(product.getId()));
     }
 
-//    public void increaseProductCount(Product product) {
-//        for(Product innerProduct: products) {
-//            if(product.getId().equals(innerProduct.getId())) {
-//                innerProduct.incrementCount();
-//                return;
-//            }
-//        }
-//    }
-//
-//    public void decreaseProductCount(Product product) {
-//        for(Product innerProduct: products) {
-//            if(product.getId().equals(innerProduct.getId())) {
-//                innerProduct.decreaseCount();
-//                return;
-//            }
-//        }
-//    }
+    public void increaseProductCount(Product product) {
+        for(Product innerProduct: products) {
+            if(product.getId().equals(innerProduct.getId())) {
+                innerProduct.incrementCount();
+                return;
+            }
+        }
+    }
+
+    public void decreaseProductCount(Product product) {
+        for(Product innerProduct: products) {
+            if(product.getId().equals(innerProduct.getId())) {
+                innerProduct.decreaseCount();
+                return;
+            }
+        }
+    }
 
     public List<Product> getProducts() {
         return products;
@@ -78,13 +78,6 @@ public class CartService {
                 .map(i -> new Order(Math.toIntExact(i.getId()), i.getCount(), 1))
                 .collect(Collectors.toList());
         orderRepository.saveAll(list);
-//        for (int i = 0; i < products.size(); i++) {
-//            Order order = new Order();
-//            order.setCount(products.get(i).getCount());
-//            order.setUser_id(1);
-//            order.setProduct_id(Math.toIntExact(products.get(i).getId()));
-//            orderRepository.saveAll()
-//        }
     }
 }
 
