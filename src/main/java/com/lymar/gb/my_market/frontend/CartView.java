@@ -13,6 +13,8 @@ import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
 
+import java.util.Set;
+
 @Route("cart")
 public class CartView extends VerticalLayout {
     private final Grid<Product> grid = new Grid<>(Product.class);
@@ -24,7 +26,7 @@ public class CartView extends VerticalLayout {
         this.cartService = cartService;
         this.mailService = mailService;
         initCartGrid();
-        add(grid, groupButton());
+//        add(grid, groupButton());
     }
 
     private void initCartGrid() {
@@ -48,13 +50,17 @@ public class CartView extends VerticalLayout {
             });
 
             var deleteButton = new Button("Удалить", items -> {
-                for (Product p : cartService.getProducts()) {
+                Set<Product> set = grid.getSelectedItems();
+                for (Product p : set) {
                     cartService.deleteProduct(p);
                 }
+                initCartGrid();
             });
 
             return new HorizontalLayout(plusButton, minusButton, deleteButton);
         }));
+        removeAll();
+        add(grid, groupButton());
     }
 
     private HorizontalLayout groupButton() {
