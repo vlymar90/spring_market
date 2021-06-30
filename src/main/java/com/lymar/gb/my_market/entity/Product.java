@@ -19,4 +19,22 @@ public class Product {
     private int count;
     @OneToMany(mappedBy = "product")
     private List<Review> reviewList;
+
+    public void incrementCount() {
+        this.count++;
+    }
+
+    public void decreaseCount() {
+        this.count--;
+    }
+
+    public static StringBuilder converterListToString(List<Product> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Product p : list) {
+            stringBuilder.append(p.name + ": " + System.lineSeparator()
+            + "Количество: " + p.count);
+            stringBuilder.append(System.lineSeparator());
+        }
+        return stringBuilder;
+    }
 }
