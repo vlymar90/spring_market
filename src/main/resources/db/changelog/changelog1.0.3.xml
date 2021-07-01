@@ -10,4 +10,9 @@
                 newDataType="varchar(256)"
                 tableName="users"/>
     </changeSet>
+    <changeSet id="add-column" author="v.lymar">
+        <addColumn tableName="product">
+            <column name="price" type="NUMERIC"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
