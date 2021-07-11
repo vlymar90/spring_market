@@ -19,8 +19,7 @@ public class Product {
     private String name;
     private BigDecimal price;
     private int count;
-    @OneToMany(mappedBy = "product")
-    private List<Review> reviewList;
+
 
     public void incrementCount() {
         this.count++;

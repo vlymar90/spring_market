@@ -15,4 +15,24 @@
             <column name="price" type="NUMERIC"/>
         </addColumn>
     </changeSet>
+    <changeSet id="change reveiw_table" author="v.lymar">
+        <addColumn tableName="review">
+            <column name="is_moderated" type="boolean" defaultValue="false"/>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_user_id" references="users(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="add column" author="v.lymar">
+        <addColumn tableName="users">
+            <column name="email" type="varchar(64)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="change_column" author="v.lymar">
+        <update tableName="review">
+            <column name="is_moderated" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </update>
+    </changeSet>
 </databaseChangeLog>

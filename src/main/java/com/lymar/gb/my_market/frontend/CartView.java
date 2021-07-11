@@ -1,6 +1,8 @@
 package com.lymar.gb.my_market.frontend;
 
+import com.lymar.gb.my_market.config.security.CustomPrincipal;
 import com.lymar.gb.my_market.entity.Product;
+import com.lymar.gb.my_market.entity.Users;
 import com.lymar.gb.my_market.service.CartService;
 import com.lymar.gb.my_market.service.MailService;
 import com.vaadin.flow.component.UI;
@@ -12,6 +14,8 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Set;
 
@@ -20,11 +24,13 @@ public class CartView extends VerticalLayout {
     private final Grid<Product> grid = new Grid<>(Product.class);
     private final CartService cartService;
     private final MailService mailService;
+    private final Authentication authentication;
 
     public CartView(CartService cartService,
                     MailService mailService) {
         this.cartService = cartService;
         this.mailService = mailService;
+        this.authentication = SecurityContextHolder.getContext().getAuthentication();
         initCartGrid();
 //        add(grid, groupButton());
     }
@@ -71,8 +77,9 @@ public class CartView extends VerticalLayout {
         });
 
         Button buy = new Button("Купить", items -> {
+            Users users = (((CustomPrincipal) authentication.getPrincipal()).getUser());
            cartService.makeOrder();
-           mailService.sendSimpleEmail("7ua.lymar2014@gmail.com",
+           mailService.sendSimpleEmail(users.getEmail(),
                    "your order in spring shop",
                    Product.converterListToString(cartService.getProducts()).toString());
         });

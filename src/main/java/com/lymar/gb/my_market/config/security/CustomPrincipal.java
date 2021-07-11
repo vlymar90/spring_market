@@ -17,6 +17,9 @@ public class CustomPrincipal implements UserDetails {
         this.authorities = List.of(new SimpleGrantedAuthority(user.getRole()));
     }
 
+    public Users getUser() {
+        return this.user;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

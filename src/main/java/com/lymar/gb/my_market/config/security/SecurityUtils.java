@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Stream;
 
 public class SecurityUtils {
+    enum Roles {
+        USER,
+        ADMIN,
+        MANAGER;
+    }
+
     public static boolean isFrameworkInternalRequest(HttpServletRequest request) {
         final String parameterValue = request.getParameter(ApplicationConstants.REQUEST_TYPE_PARAMETER);
         return parameterValue != null
@@ -16,6 +22,13 @@ public class SecurityUtils {
     }
 
     public static boolean isAdmin(Authentication authentication) {
-        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"));
+        return authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals(Roles.ADMIN.name()));
     }
+
+    public static boolean isManager(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals(Roles.MANAGER.name()));
+    }
+
 }
