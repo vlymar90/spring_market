@@ -78,7 +78,7 @@ public class CartView extends VerticalLayout {
 
         Button buy = new Button("Купить", items -> {
             Users users = (((CustomPrincipal) authentication.getPrincipal()).getUser());
-           cartService.makeOrder();
+           cartService.makeOrder(users.getId());
            mailService.sendSimpleEmail(users.getEmail(),
                    "your order in spring shop",
                    Product.converterListToString(cartService.getProducts()).toString());

@@ -9,14 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
     private JavaMailSender javaMailSender;
-
     public void sendSimpleEmail(String toAddress, String subject, String message) {
         new Thread(() -> {
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setTo(toAddress);
-            simpleMailMessage.setSubject(subject);
-            simpleMailMessage.setText(message);
-            javaMailSender.send(simpleMailMessage);
+            if(toAddress != null) {
+                SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+                simpleMailMessage.setTo(toAddress);
+                simpleMailMessage.setSubject(subject);
+                simpleMailMessage.setText(message);
+                javaMailSender.send(simpleMailMessage);
+            }
         }).start();
     }
 }
