@@ -3,8 +3,6 @@ package com.lymar.gb.my_market.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.persistence.*;
 
 @Entity
@@ -22,5 +20,13 @@ public class Users {
     private String phone;
     private String login;
     private String password;
+    private String email;
     private String role;
+
+    public String getFIO() {
+        return String.format("%s %s %s",
+                getLast_name() != null ? getLast_name() : "",
+                getName() != null ? getName() : "",
+                getSecond_name() != null ? getSecond_name() : "");
+    }
 }

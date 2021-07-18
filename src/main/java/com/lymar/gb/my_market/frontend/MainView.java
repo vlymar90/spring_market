@@ -4,6 +4,7 @@ import com.lymar.gb.my_market.entity.Product;
 import com.lymar.gb.my_market.entity.filter.ProductFilter;
 import com.lymar.gb.my_market.repository.ProductRepository;
 import com.lymar.gb.my_market.service.CartService;
+import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -14,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
 
 import java.util.HashMap;
@@ -49,6 +51,7 @@ public class MainView extends VerticalLayout  {
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         ListDataProvider<Product> dataProvider = DataProvider.ofCollection(products);
         grid.setDataProvider(dataProvider);
+        initReviewsButton();
     }
 
     private HorizontalLayout groupButton() {
@@ -83,5 +86,16 @@ public class MainView extends VerticalLayout  {
                 new FormLayout.ResponsiveStep("600px", 2),
                 new FormLayout.ResponsiveStep("700px", 4));
         return nameLayout;
+    }
+
+    private void initReviewsButton() {
+        grid.addColumn(new ComponentRenderer<>(item -> {
+            var seeReviewButton = new Button("Отзывы", i -> {
+                ComponentUtil.setData(UI.getCurrent(), "product", item);
+                UI.getCurrent().navigate("review");
+            });
+
+            return new HorizontalLayout(seeReviewButton);
+        }));
     }
 }

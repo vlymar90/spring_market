@@ -1,7 +1,7 @@
 package com.lymar.gb.my_market.frontend;
 
 import com.lymar.gb.my_market.entity.Users;
-import com.lymar.gb.my_market.repository.UserRepository;
+import com.lymar.gb.my_market.service.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -10,7 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Route("registration")
 public class RegistrationView extends VerticalLayout {
@@ -22,11 +22,9 @@ public class RegistrationView extends VerticalLayout {
     private TextField login;
     private TextField phone;
     private TextField email;
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private UserService userService;
 
-    public RegistrationView(UserRepository userRepository,
-                            BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public RegistrationView(UserService userService) {
         name = new TextField();
         lastName = new TextField();
         secondName = new TextField();
@@ -34,8 +32,7 @@ public class RegistrationView extends VerticalLayout {
         login = new TextField();
         phone = new TextField();
         email = new TextField();
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userService = userService;
         initPage();
         addButton();
         setAlignItems(Alignment.CENTER);
@@ -44,30 +41,53 @@ public class RegistrationView extends VerticalLayout {
 
     private void addButton() {
         Button buttonSave = new Button("Регистрация", i -> {
-            Users users = new Users();
-            String passEncode = bCryptPasswordEncoder.encode(password.getValue());
-            users.setLogin(login.getValue());
-            users.setName(name.getValue());
-            users.setLast_name(lastName.getValue());
-            users.setSecond_name(secondName.getValue());
-            users.setPhone(phone.getValue());
-            users.setPassword(passEncode);
-            users.setRole("user");
-            userRepository.save(users);
-            Notification.show("Учётная запись добавлена успешно");
-            UI.getCurrent().navigate("login");
+            boolean hasError = false;
+            if (!phone.getValue().matches("\\d+")) {
+                Notification.show("Телефон должен состоять из цифр");
+                hasError = true;
+            }
+
+            if (!name.getValue().matches("[а-яА-Я]+")) {
+                Notification.show("Имя должено состоять из букв");
+                hasError = true;
+            }
+
+            if (!lastName.getValue().matches("[а-яА-Я]+")) {
+                Notification.show("Имя должено состоять из букв");
+                hasError = true;
+            }
+
+            if (!secondName.getValue().matches("[а-яА-Я]+")) {
+                Notification.show("Имя должено состоять из букв");
+                hasError = true;
+            }
+
+            if (hasError) {
+                return;
+            } else {
+                Users user = userService.saveUser(
+                        phone.getValue(),
+                        login.getValue(),
+                        password.getValue(),
+                        email.getValue(),
+                        name.getValue(),
+                        secondName.getValue(),
+                        lastName.getValue());
+                Notification.show("Учётная запись добавлена успешно");
+                UI.getCurrent().navigate("login");
+            }
         });
         add(buttonSave);
     }
 
     private void initPage() {
-        layoutWithFormItems.addFormItem(name, "First name");
-        layoutWithFormItems.addFormItem(lastName, "Last name");
-        layoutWithFormItems.addFormItem(secondName, "Second name");
-        layoutWithFormItems.addFormItem(password, "password");
-        layoutWithFormItems.addFormItem(login, "login");
+        layoutWithFormItems.addFormItem(name, "Имя");
+        layoutWithFormItems.addFormItem(lastName, "Фамилия");
+        layoutWithFormItems.addFormItem(secondName, "Отчество");
+        layoutWithFormItems.addFormItem(password, "Пароль");
+        layoutWithFormItems.addFormItem(login, "Логин");
         layoutWithFormItems.addFormItem(email, "E-mail");
-        layoutWithFormItems.addFormItem(phone, "Phone");
+        layoutWithFormItems.addFormItem(phone, "Телефон");
         add(layoutWithFormItems);
     }
 }

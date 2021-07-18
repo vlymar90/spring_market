@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestCache().requestCache(new CustomRequestCache())
                 .and().authorizeRequests()
                 .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
+                .antMatchers("/users").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage(LOGIN_PROCESSING_URL).permitAll()

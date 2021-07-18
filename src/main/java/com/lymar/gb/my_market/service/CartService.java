@@ -73,9 +73,10 @@ public class CartService {
         return products;
     }
 
-    public void makeOrder() {
+    public void makeOrder(Long idUser) {
+        int id = Math.toIntExact(idUser);
         List<Order> list = products.stream()
-                .map(i -> new Order(Math.toIntExact(i.getId()), i.getCount(), 1))
+                .map(i -> new Order(Math.toIntExact(i.getId()), i.getCount(), id))
                 .collect(Collectors.toList());
         orderRepository.saveAll(list);
     }
