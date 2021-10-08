@@ -11,3 +11,4 @@ public class MyMarketApplication {
     }
 
 }
+/*Посмотрите пожалуйста ветку мастер, а именно класс RegistrationView. Спасибо*/
